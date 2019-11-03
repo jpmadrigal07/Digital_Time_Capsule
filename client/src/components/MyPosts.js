@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MainNavBar from './partials/MainNavBar';
+import MyPostsContent from './content/MyPosts';
 
 class MyPosts extends Component {
 
@@ -11,7 +12,7 @@ class MyPosts extends Component {
 
   renderContent() {
     if(!this.props.auth.isLoading && this.props.auth.user) {
-      return <h3 className="text-center" style={{margin: '15rem auto 0px'}}>My Posts</h3>
+      return <MyPostsContent />
     } else {
       return <h3 className="text-center" href="#">...</h3>
     }

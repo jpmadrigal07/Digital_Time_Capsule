@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MainNavBar from './partials/MainNavBar';
 import PageNotFound from './PageNotFound';
+import AddEditorContent from './content/AddEditor';
 
 class AddEditor extends Component {
 
@@ -15,7 +16,7 @@ class AddEditor extends Component {
       if(this.props.auth.user.role === "Editor" || this.props.auth.user.role === "User") {
         return <PageNotFound />
       } else {
-        return <h3 className="text-center" style={{margin: '15rem auto 0px'}}>Add Editors</h3>
+        return <AddEditorContent />
       }
     } else {
       return <h3 className="text-center" href="#">...</h3>

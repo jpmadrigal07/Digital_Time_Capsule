@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MainNavBar from './partials/MainNavBar';
 import PageNotFound from './PageNotFound';
+import PendingPostsContent from './content/PendingPosts';
 
 class PendingPosts extends Component {
 
@@ -15,7 +16,7 @@ class PendingPosts extends Component {
       if(this.props.auth.user.role === "User") {
         return <PageNotFound />
       } else {
-        return <h3 className="text-center" style={{margin: '15rem auto 0px'}}>Pending Posts</h3>
+        return <PendingPostsContent />
       }
     } else {
       return <h3 className="text-center" href="#">...</h3>
