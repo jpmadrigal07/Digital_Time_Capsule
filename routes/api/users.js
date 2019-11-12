@@ -1,62 +1,84 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const config = require('config');
-const jwt = require('jsonwebtoken');
-
+const moment = require('moment');
 
 // User Model
-const User = require('../../models/User');
+require('../../models/User');
+const mongoose = require('mongoose');
+const User = mongoose.model('user');
 
-// @route   POST api/users
-// @desc    Register new user
+// @route   GET api/items
+// @desc    Get All Items
 // @access  Public
-router.post('/', (req, res) => {
-  const { name, email, password } = req.body;
-
-  // Simple validation
-  if(!name || !email || !password) {
-    return res.status(400).json({ msg: 'Please enter all fields' });
-  }
-
-  // Check for existing user
-  User.findOne({ email })
-    .then(user => {
-      if(user) return res.status(400).json({ msg: 'User already exists' });
-
-      const newUser = new User({
-        name,
-        email,
-        password
-      });
-
-      // Create salt & hash
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if(err) throw err;
-          newUser.password = hash;
-          newUser.save()
-            .then(user => {
-              jwt.sign(
-                { id: user.id },
-                config.get('jwtSecret'),
-                { expiresIn: 3600 },
-                (err, token) => {
-                  if(err) throw err;
-                  res.json({
-                    token,
-                    user: {
-                      id: user.id,
-                      name: user.name,
-                      email: user.email
-                    }
-                  });
-                }
-              )
-            });
-        })
-      })
+router.get('/', (req, res) => {
+  User.find(req.query)
+    .sort({
+      createdAt: -1
     })
+    .then(editors => res.json(editors));
+});
+
+// @route   POST api/items
+// @desc    Create An Item
+// @access  Private
+router.post('/', (req, res) => {
+  const newEditor = new User({
+    username: req.body.username,
+    password: req.body.password,
+    email: 'editor@ccp.com',
+    profilePicture: '/images/default-user.png',
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    role: req.body.role
+  });
+
+  newEditor.save().then(editors => res.json(editors));
+});
+
+// @route   PUT api/posts
+// @desc    Update A Post Status
+// @access  Private
+router.put('/status/:id', (req, res) => {
+  let query = {};
+  if (req.body.status === "Block") {
+    query = {
+      $set: {
+        blockedAt: moment()
+      }
+    }
+  } else if (req.body.status === "Unblock") {
+    query = {
+      $unset: {
+        blockedAt: 1
+      }
+    }
+  }
+  User.findByIdAndUpdate(req.params.id, query, (err, updatedUser) => {
+    if (err) {
+      res.json({
+        error: true,
+        message: err
+      })
+    } else {
+      User.find({role: req.body.role}).sort({
+        createdAt: -1
+      }).then(users => res.json(users));
+    }
+  })
+
+});
+
+// @route   DELETE api/items/:id
+// @desc    Delete A Item
+// @access  Private
+router.delete('/:id', (req, res) => {
+  User.findById(req.params.id)
+    .then(editor => editor.remove().then(() => res.json({
+      success: true
+    })))
+    .catch(err => res.status(404).json({
+      success: false
+    }));
 });
 
 module.exports = router;

@@ -26,8 +26,24 @@ router.get(
   '/auth/facebook/callback', 
   passport.authenticate('facebook'),
   (req, res) => {
-    res.redirect('/');
+    res.redirect('/my-posts');
   }
+);
+
+router.get('/auth/local/callback', (req, res) => {
+  res.send(req.user);
+});
+
+router.get('/auth/local/failure', (req, res) => {
+  res.send(false);
+});
+
+router.post(
+	'/auth/local',
+	passport.authenticate('local-login', {
+		successRedirect: '/auth/local/callback',
+		failureRedirect: '/auth/local/failure'
+	})
 );
 
 router.get('/api/logout', (req, res) => {

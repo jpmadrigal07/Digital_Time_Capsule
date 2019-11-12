@@ -19,3 +19,22 @@ export const fetchUser = () => dispatch => {
     });
   });
 };
+
+export const loginAdmin = values => dispatch => {
+  console.log(values)
+  dispatch({ type: USER_LOADING });
+    axios
+    .post('/auth/local', values)
+    .then(res =>
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: AUTH_ERROR
+      });
+    });
+};

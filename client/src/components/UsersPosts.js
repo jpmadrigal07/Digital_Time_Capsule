@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MainNavBar from './partials/MainNavBar';
 import PageNotFound from './PageNotFound';
-import PendingPostsContent from './content/PendingPosts';
+import UsersPostsContent from './content/UsersPosts';
 
-class PendingPosts extends Component {
+class UsersPosts extends Component {
 
   componentDidMount(){
     document.title = this.props.title;
@@ -16,7 +16,7 @@ class PendingPosts extends Component {
       if(this.props.auth.user.role === "User") {
         return <PageNotFound />
       } else {
-        return <PendingPostsContent />
+        return <UsersPostsContent />
       }
     } else {
       return <h3 className="text-center" href="#">...</h3>
@@ -38,4 +38,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps)(PendingPosts);
+export default connect(mapStateToProps)(UsersPosts);

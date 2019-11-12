@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
 const UsersRoute = require('./routes/api/users');
+const PostsRoute = require('./routes/api/posts');
 const AuthRoute = require('./routes/api/auth');
 require('./services/passport');
 
@@ -21,6 +22,7 @@ mongoose
   .catch(err => console.log(err));
 
 app.use(express.json());
+app.use(express.static(__dirname + "/public"));
 app.use(
     cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -32,6 +34,7 @@ app.use(passport.session());
 
 // Use Routes
 app.use('/api/users', UsersRoute);
+app.use('/api/posts', PostsRoute);
 app.use('/', AuthRoute);
 
 // Serve static assets if in production

@@ -18,7 +18,7 @@ const textDarkYellow = {
 class Login extends Component {
 
   componentDidMount(){
-    document.title = "CCP - Login";
+    document.title = this.props.title;
     document.body.style.backgroundColor = '#1a1a1a';
   }
 

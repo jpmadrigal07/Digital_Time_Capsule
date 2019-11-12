@@ -1,60 +1,80 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addEditor } from '../../actions/editorActions';
+import { withRouter } from 'react-router-dom';
 
-const AddEditor = () => {
-    return (
-        <div>
-            <main role="main" class="container">
-                <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                            <label for="inputEmail4">Email</label>
-                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email" />
-                            </div>
-                            <div class="form-group col-md-6">
-                            <label for="inputPassword4">Password</label>
-                            <input type="password" class="form-control" id="inputPassword4" placeholder="Password" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress">Address</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" />
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Address 2</label>
-                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"/>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                            <label for="inputCity">City</label>
-                            <input type="text" class="form-control" id="inputCity" />
-                            </div>
-                            <div class="form-group col-md-4">
-                            <label for="inputState">State</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                            <label for="inputZip">Zip</label>
-                            <input type="text" class="form-control" id="inputZip" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gridCheck" />
-                            <label class="form-check-label" for="gridCheck">
-                                Check me out
-                            </label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Sign in</button>
-                    </form>
-                </div>
-            </main>
-        </div>
-    );
-};
+class AddEditor extends Component {
 
-export default AddEditor;
+    state = {
+        username: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        role: 'Editor'
+    };
+
+    onChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    onSubmit = e => {
+        e.preventDefault();
+
+        const { history } = this.props;
+
+        const newEditor = {
+            username: this.state.username,
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            role: this.state.role
+        };
+
+        // Add item via addItem action
+        this.props.addEditor(newEditor, history);
+        console.log(this.props);
+    };
+
+    render() {
+        return (
+            <div>
+                <main role="main" className="container">
+                    <div className="my-3 p-3 bg-white rounded box-shadow">
+                        <form onSubmit={this.onSubmit}>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label>Username</label>
+                                    <input type="text" className="form-control" name="username" placeholder="" onChange={this.onChange} required />
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label>Password</label>
+                                    <input type="password" className="form-control" name="password" placeholder="" onChange={this.onChange} required />
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label>First Name</label>
+                                    <input type="text" className="form-control" name="firstName" placeholder="" onChange={this.onChange} required />
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label>Last Name</label>
+                                    <input type="text" className="form-control" name="lastName" placeholder="" onChange={this.onChange} required />
+                                </div>
+                            </div>
+                            <button type="submit" className="btn btn-primary">Add</button>
+                        </form>
+                    </div>
+                </main>
+            </div>
+        );
+    }
+}
+
+const mapStateToProps = state => ({
+  editor: state.editor,
+});
+
+export default connect(
+  mapStateToProps,
+  { addEditor }
+)(withRouter(AddEditor));

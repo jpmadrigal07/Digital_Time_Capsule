@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    Modal,
-    ModalHeader,
-    ModalBody
-  } from 'reactstrap';
-import { getPosts, deletePost } from '../../actions/postActions';
+  Modal,
+  ModalHeader,
+  ModalBody
+} from 'reactstrap';
+import { getPosts, editPostStatus, deletePost } from '../../actions/postActions';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-class MyPosts extends Component {
+class PendingPosts extends Component {
 
     state = {
         modal: false,
@@ -26,36 +26,44 @@ class MyPosts extends Component {
           modal: !this.state.modal,
           message: message
         });
-    };   
+    };    
 
     componentDidMount() {
-        this.props.getPosts(this.props.auth.user._id);
+        this.props.getPosts("All");
     };
 
     onDeleteClick = id => {
         this.props.deletePost(id);
     };
 
+    onChangeStatusClick = (id, status) => {
+        this.props.editPostStatus(id, status);
+    };
+
+    renderAction = (id, approved, disapproved) => {
+        if(typeof approved !== 'undefined' && typeof disapproved === 'undefined') {
+            return <a href="#" onClick={this.onChangeStatusClick.bind(this, id, "Disapprove")}>Disapprove</a>
+        } else if(typeof approved === 'undefined' && typeof disapproved !== 'undefined') {
+            return <a href="#" onClick={this.onChangeStatusClick.bind(this, id, "Approve")}>Approve</a>
+        } else {
+            return <a href="#" onClick={this.onChangeStatusClick.bind(this, id, "Approve")}>Approve</a>
+        }
+    };
+
     renderStatus = (approved, disapproved) => {
         if(typeof approved !== 'undefined' && typeof disapproved === 'undefined') {
-            return <span>Approved</span>
+            return <span>Approve</span>
         } else if(typeof approved === 'undefined' && typeof disapproved !== 'undefined') {
-            return <span>Disapproved</span>
+            return <span>Disapprove</span>
         } else {
             return <span>Pending</span>
         }
-    };
-
-    renderAction = (id, blockedAt) => {
-        if(typeof blockedAt !== 'undefined') {
-            return <a href="#" onClick={this.onChangeStatusClick.bind(this, id, "Unblock")}>Unblock</a>
-        } else {
-            return <a href="#" onClick={this.onChangeStatusClick.bind(this, id, "Block")}>Block</a>
-        }
-    };
+    }
 
     render() {
         const { posts } = this.props.post;
+        let counter = 0;
+        console.log(this.props.post);
         return (
             <div>
                 <main role="main" className="container">
@@ -75,7 +83,7 @@ class MyPosts extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {posts.map(({ _id, userId, message, mediaURL, dateYear, dateMonth, dateDay, approvedAt, disapprovedAt, createdAt }, index) => (
+                                    {posts.map(({_id, userId, message, mediaURL, dateYear, dateMonth, dateDay, approvedAt, disapprovedAt, createdAt }, index) => (
                                         <tr key={_id}>
                                             <td>{index+1}</td>
                                             <td>{userId.firstName} {userId.lastName}</td>
@@ -84,7 +92,7 @@ class MyPosts extends Component {
                                             <td>{dateYear} {dateMonth} {dateDay}</td>
                                             <td>{moment(createdAt).format( 'MMM DD, YYYY hh:mm A')}</td>
                                             <td>{this.renderStatus(approvedAt, disapprovedAt)}</td>
-                                            <td><a href="#" onClick={this.onDeleteClick.bind(this, _id)}>Delete</a></td>
+                                            <td>{this.renderAction(_id, approvedAt, disapprovedAt)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -92,6 +100,7 @@ class MyPosts extends Component {
                         </div>
                     </div>
                 </main>
+
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this, this.state.message)}>
                     <ModalHeader toggle={this.toggle.bind(this, this.state.message)}>Message</ModalHeader>
@@ -105,12 +114,11 @@ class MyPosts extends Component {
 }
 
 const mapStateToProps = state => ({
-  post: state.post,
-  auth: state.auth
+  post: state.post
 });
 
 export default connect(
   mapStateToProps,
-  { getPosts, deletePost }
-)(MyPosts);
+  { getPosts, editPostStatus, deletePost }
+)(PendingPosts);
 
