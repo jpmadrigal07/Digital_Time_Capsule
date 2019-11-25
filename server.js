@@ -34,6 +34,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Load Admin Account
+require('./seed');
+
 // Use Routes
 app.use('/api/users', UsersRoute);
 app.use('/api/posts', PostsRoute);
