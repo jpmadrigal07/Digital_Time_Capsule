@@ -12,6 +12,7 @@ const postSchema = new Schema({
     dateYear: String,
     dateMonth: String,
     dateDay: String,
+    isImage: Boolean,
     approvedAt: Date,
     disapprovedAt: Date,
     createdAt: {

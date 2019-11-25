@@ -63,12 +63,47 @@ router.post('/', uploadController.uploadImages, uploadController.resizeImages, u
 			if (err) {
 				res.json({success: false})
 			} else {
-				Post.findOne({_id: post._id}).populate('userId').sort({createdAt: -1}).then(post => res.json(post));
+				Post.findOne({_id: post._id}).populate('userId').then(post => res.json(post));
 			}
 		})
 	}
   
 });
+
+
+// @route   POST api/posts
+// @desc    Create An Post
+// @access  Private
+router.post('/video', (req, res) => {
+
+  const fields = {};
+
+  new formidable.IncomingForm().parse(req)
+  .on('field', (name, field) => {
+    fields[name] = field;
+  })
+
+	upload(req, res, (err) => {
+		if (err) {
+			res.json({success: false})
+		} else {
+			if (req.files == undefined) {
+				res.json({success: false})
+			} else {
+        fields['mediaURL'] = 'uploads/'+req.files[0].filename;
+				Post.create(fields, function (err, post) {
+					if (err) {
+						res.json({success: false})
+					} else {
+						Post.findOne({_id: post._id}).populate('userId').then(post => res.json(post));
+					}
+				})
+			}
+		}
+  });
+  
+});
+
 
 // @route   PUT api/posts
 // @desc    Update A Post Status
@@ -101,7 +136,7 @@ router.put('/status/:id', (req, res) => {
 					message: err
 				})
 			} else {
-        Post.find().populate('userId').sort({date: -1}).then(posts => res.json(posts));
+        Post.find().populate('userId').then(posts => res.json(posts));
 			}
 		})
 

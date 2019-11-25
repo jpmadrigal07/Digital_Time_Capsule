@@ -1,5 +1,6 @@
 const multer = require("multer");
 const sharp = require("sharp");
+const path = require('path');
 
 const multerStorage = multer.memoryStorage();
 
@@ -19,57 +20,59 @@ const upload = multer({
 const uploadFiles = upload.array("file", 10);
 
 const uploadImages = (req, res, next) => {
-  uploadFiles(req, res, err => {
-    if (err instanceof multer.MulterError) {
-      if (err.code === "LIMIT_UNEXPECTED_FILE") {
-        return res.send("Too many files to upload.");
-      }
-    } else if (err) {
-      return res.send(err);
-    }
 
-    next();
-  });
+    uploadFiles(req, res, err => {
+      if (err instanceof multer.MulterError) {
+        if (err.code === "LIMIT_UNEXPECTED_FILE") {
+          return res.send("Too many files to upload.");
+        }
+      } else if (err) {
+        return res.send(err);
+      }
+
+      next();
+    });
+
 };
 
 const resizeImages = async (req, res, next) => {
   if (!req.files) return next();
 
-  await Promise.all(
-    req.files.map(async file => {
-      const filename = file.originalname.replace(/\..+$/, "");
-      const newFilename = `bezkoder-${filename}-${Date.now()}.jpeg`;
+    await Promise.all(
+      req.files.map(async file => {
+        const newFilename = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
 
-      await sharp(file.buffer)
-        .resize(1024, 1024)
-        .toFormat("jpg")
-        .jpeg({ quality: 90 })
-        .toFile(`./public/uploads/${newFilename}`);
+        await sharp(file.buffer)
+          .resize(1024, 1024)
+          .toFormat("jpg")
+          .jpeg({ quality: 90 })
+          .toFile(`./public/uploads/${newFilename}`);
 
-      req.body.mediaURL = 'uploads/'+newFilename;
-    })
-  );
+        req.body.mediaURL = 'uploads/'+newFilename;
+      })
+    );
+  
 
   next();
 };
 
 const resizeImagesSmaller = async (req, res, next) => {
     if (!req.files) return next();
-  
-    await Promise.all(
-      req.files.map(async file => {
-        const filename = file.originalname.replace(/\..+$/, "");
-        const newFilename = `small-bezkoder-${filename}-${Date.now()}.jpeg`;
-  
-        await sharp(file.buffer)
-          .resize(512, 512)
-          .toFormat("jpg")
-          .jpeg({ quality: 90 })
-          .toFile(`./public/uploads/${newFilename}`);
-  
-        req.body.smallerMediaURL = 'uploads/'+newFilename;
-      })
-    );
+
+      await Promise.all(
+        req.files.map(async file => {
+          const newFilename = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
+    
+          await sharp(file.buffer)
+            .resize(512, 512)
+            .toFormat("jpg")
+            .jpeg({ quality: 90 })
+            .toFile(`./public/uploads/${newFilename}`);
+    
+          req.body.smallerMediaURL = 'uploads/'+newFilename;
+        })
+      );
+    
   
     next();
   };

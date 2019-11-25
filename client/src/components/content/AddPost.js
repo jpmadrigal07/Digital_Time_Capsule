@@ -11,6 +11,7 @@ class AddPost extends Component {
 
     state = {
         selectedFile: null,
+        isSelectedImage: null,
         message: '',
         year: '',
         month: '',
@@ -77,10 +78,16 @@ class AddPost extends Component {
         let files = event.target.files;
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkFileSize(event)) {
             // if return true allow to setState
+            let isImage = true;
+            if(files[0].type === 'video/mp4') {
+                isImage = false;
+            }
             this.setState({
                 selectedFile: files,
+                isSelectedImage: isImage,
                 loaded: 0
             })
+
         }
     }
 
@@ -94,13 +101,14 @@ class AddPost extends Component {
           data.append('file', this.state.selectedFile[x])
         }
 
+        data.append('isImage', this.state.isSelectedImage)
         data.append('userId', this.props.auth.user._id)
         data.append('message', this.state.message)
         data.append('dateYear', this.state.year)
         data.append('dateMonth', this.state.month)
         data.append('dateDay', this.state.day)
 
-        this.props.addPost(data, history);
+        this.props.addPost(data, this.state.isSelectedImage, history);
         console.log(this.props.post)
     };
     
@@ -125,7 +133,7 @@ class AddPost extends Component {
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label>Month (optional)</label>
-                                    <select name="month" className="form-control" onChange={this.onChangeField} required >
+                                    <select name="month" className="form-control" onChange={this.onChangeField} >
                                         <option value=""></option>
                                         <option value="January">January</option>
                                         <option value="February">February</option>
@@ -143,7 +151,7 @@ class AddPost extends Component {
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label>Day (optional)</label>
-                                    <input type="number" className="form-control" name="day" min="1" max="31" onChange={this.onChangeField} required />
+                                    <input type="number" className="form-control" name="day" min="1" max="31" onChange={this.onChangeField} />
                                 </div>
                             </div>
                             <button type="submit" className="btn btn-primary">Upload</button>

@@ -17,7 +17,8 @@ export const getPosts = (status) => dispatch => {
     );
 };
 
-export const addPost = (post, history) => dispatch => {
+export const addPost = (post, isImage, history) => dispatch => {
+  if(isImage) {
   axios
     .post('/api/posts', post)
     .then(res =>
@@ -30,6 +31,20 @@ export const addPost = (post, history) => dispatch => {
     .catch(err =>
       dispatch(returnErrors(err.response.data, err.response.status))
     );
+  } else {
+    axios
+    .post('/api/posts/video', post)
+    .then(res =>
+      dispatch({
+        type: ADD_POST,
+        payload: res.data
+      }),
+      history.push('/my-posts')
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+  }
 };
 
 export const editPostStatus = (id, status) => dispatch => {
