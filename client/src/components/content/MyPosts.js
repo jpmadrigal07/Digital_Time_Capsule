@@ -75,7 +75,7 @@ class MyPosts extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {posts.map(({ _id, userId, message, mediaURL, dateYear, dateMonth, dateDay, approvedAt, disapprovedAt, createdAt }, index) => (
+                                    {posts.reverse().map(({ _id, userId, message, mediaURL, dateYear, dateMonth, dateDay, approvedAt, disapprovedAt, createdAt }, index) => (
                                         <tr key={_id}>
                                             <td>{index+1}</td>
                                             <td>{userId.firstName} {userId.lastName}</td>

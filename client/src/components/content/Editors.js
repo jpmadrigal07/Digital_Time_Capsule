@@ -46,7 +46,7 @@ class Editors extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                            {editors.map(({ _id, firstName, lastName, username, blockedAt, createdAt }, index) => (
+                            {editors.reverse().map(({ _id, firstName, lastName, username, blockedAt, createdAt }, index) => (
                                 <tr key={_id}>
                                     <td>{index+1}</td>
                                     <td>{firstName} {lastName}</td>

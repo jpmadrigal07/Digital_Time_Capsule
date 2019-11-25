@@ -8,6 +8,7 @@ const postSchema = new Schema({
     },
     message: String,
     mediaURL: String,
+    smallerMediaURL: String,
     dateYear: String,
     dateMonth: String,
     dateDay: String,

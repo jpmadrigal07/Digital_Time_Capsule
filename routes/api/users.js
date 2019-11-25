@@ -12,9 +12,6 @@ const User = mongoose.model('user');
 // @access  Public
 router.get('/', (req, res) => {
   User.find(req.query)
-    .sort({
-      createdAt: -1
-    })
     .then(editors => res.json(editors));
 });
 
@@ -60,9 +57,7 @@ router.put('/status/:id', (req, res) => {
         message: err
       })
     } else {
-      User.find({role: req.body.role}).sort({
-        createdAt: -1
-      }).then(users => res.json(users));
+      User.find({role: req.body.role}).then(users => res.json(users));
     }
   })
 

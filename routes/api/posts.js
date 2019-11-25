@@ -4,6 +4,7 @@ const moment = require('moment');
 const multer = require('multer');
 const path = require('path');
 const formidable = require('formidable');
+const uploadController = require("../../services/uploadController");
 
 // Post Model
 require('../../models/Post');
@@ -17,9 +18,9 @@ mongoose.set('useFindAndModify', false);
 router.get('/', (req, res) => {
   let status = req.query.status;
   if (typeof req.query.status !== 'undefined') {
-    if (status == "All") {
+    if (status === "All") {
       delete req.query.status;
-    } else if (status == "Pending") {
+    } else if (status === "Pending") {
       req.query.$and = [{
         approvedAt: {
           $exists: false
@@ -30,6 +31,9 @@ router.get('/', (req, res) => {
         }
       }]
       delete req.query.status;
+    } else if (status === "Approve") {
+      req.query.approvedAt = {$exists: true}
+      delete req.query.status;
     }
 
     if(status.length > 7) {
@@ -39,45 +43,30 @@ router.get('/', (req, res) => {
   }
   req.query.deletedAt = {
 		$exists: false
-	};
+  };
   Post.find(req.query)
     .populate('userId')
-    .sort({
-      createdAt: -1
-    })
     .then(posts => res.json(posts));
 });
 
 // @route   POST api/posts
 // @desc    Create An Post
 // @access  Private
-router.post('/', (req, res) => {
+router.post('/', uploadController.uploadImages, uploadController.resizeImages, uploadController.resizeImagesSmaller, (req, res) => {
 
-  const fields = {};
+  console.log(req.body);
 
-  new formidable.IncomingForm().parse(req)
-  .on('field', (name, field) => {
-    fields[name] = field;
-  })
-
-	upload(req, res, (err) => {
-		if (err) {
-			res.json({success: false})
-		} else {
-			if (req.files == undefined) {
+	if (req.files == undefined) {
+		res.json({success: false})
+	} else {
+		Post.create(req.body, function (err, post) {
+			if (err) {
 				res.json({success: false})
 			} else {
-        fields['mediaURL'] = '/uploads/'+req.files[0].filename;
-				Post.create(fields, function (err, post) {
-					if (err) {
-						res.json({success: false})
-					} else {
-						Post.findOne({_id: post._id}).populate('userId').sort({createdAt: -1}).then(post => res.json(post));
-					}
-				})
+				Post.findOne({_id: post._id}).populate('userId').sort({createdAt: -1}).then(post => res.json(post));
 			}
-		}
-  });
+		})
+	}
   
 });
 
@@ -173,8 +162,6 @@ function checkFileType(file, cb) {
 	const filetypes = /jpeg|jpg|png|gif|mp4/;
 	const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
 	const mimetype = filetypes.test(file.mimetype);
-
-	console.log(file);
 
 	if (extname) {
 		return cb(null, true);
