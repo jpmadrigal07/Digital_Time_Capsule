@@ -47,14 +47,14 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log(profile);
-      // const existingUser = await User.findOne({ userId: profile.id });
-      // if (existingUser) {
-      //   // RECORD FOUND!
-      //   done(null, existingUser);
-      // } else {
-      //   const user = await new User({ userId: profile.id, firstName: profile.name.givenName, lastName: profile.name.familyName, email: profile.emails[0].value, profilePicture: profile.photos[0].value, loginPlatform: 'Facebook' }).save();
-      //   done(null, user);
-      // }
+      const existingUser = await User.findOne({ userId: profile.id });
+      if (existingUser) {
+        // RECORD FOUND!
+        done(null, existingUser);
+      } else {
+        const user = await new User({ userId: profile.id, firstName: profile.name.givenName, lastName: profile.name.familyName, email: profile.emails[0].value, profilePicture: profile.photos[0].value, loginPlatform: 'Facebook' }).save();
+        done(null, user);
+      }
     }
   )
 );
