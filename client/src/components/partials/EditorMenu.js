@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import FeatherIcon from 'feather-icons-react';
 
 class EditorMenu extends Component {
 
   renderMyPost() {
     if(this.props.location.pathname === "/" || this.props.location.pathname === "/login" || this.props.location.pathname === "/my-posts") {
-      return <Link className="nav-link active" to="/my-posts">My Posts</Link>
+      return <Link className="nav-link active" to="/my-posts"><FeatherIcon icon="menu" size="17" /> My Posts</Link>
     } else {
-      return <Link className="nav-link" to="/my-posts">My Posts</Link>
+      return <Link className="nav-link" to="/my-posts"><FeatherIcon icon="menu" size="17" /> My Posts</Link>
     }
   }
 
@@ -18,8 +19,8 @@ class EditorMenu extends Component {
             <div className="container">
               <nav className="nav nav-underline">
                 { this.renderMyPost() }
-                { this.props.location.pathname === "/add-post" ? <Link className="nav-link active" to="/add-post">Add Post</Link> : <Link className="nav-link" to="/add-post">Add Post</Link> }
-                { this.props.location.pathname === "/users-posts" ? <Link className="nav-link active" to="/users-posts">Users Posts</Link> : <Link className="nav-link" to="/users-posts">Users Posts</Link> }
+                { this.props.location.pathname === "/add-post" ? <Link className="nav-link active" to="/add-post"><FeatherIcon icon="plus-circle" size="17" /> Add Post</Link> : <Link className="nav-link" to="/add-post"><FeatherIcon icon="plus-circle" size="17" /> Add Post</Link> }
+                { this.props.location.pathname === "/users-posts" ? <Link className="nav-link active" to="/users-posts"><FeatherIcon icon="menu" size="17" /> Users Posts</Link> : <Link className="nav-link" to="/users-posts"><FeatherIcon icon="menu" size="17" /> Users Posts</Link> }
               </nav>
             </div>
         </div>

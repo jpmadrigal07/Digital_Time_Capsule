@@ -4,6 +4,7 @@ import AdminMenu from './AdminMenu';
 import EditorMenu from './EditorMenu';
 import UserMenu from './UserMenu';
 import $ from 'jquery';
+import FeatherIcon from 'feather-icons-react';
 
 class MainNavBar extends Component {
 
@@ -47,7 +48,7 @@ class MainNavBar extends Component {
             <div className="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
               <ul className="navbar-nav ml-auto flex-nowrap">
                 <li className="nav-item">
-                    <a className="nav-link" href="/api/logout">Sign out</a>
+                    <a className="nav-link" href="/api/logout"><FeatherIcon icon="log-out" size="17" /> Log Out</a>
                 </li>
               </ul>
             </div>
