@@ -18,6 +18,7 @@ export const getPosts = (status) => dispatch => {
 };
 
 export const addPost = (post, isImage, history) => dispatch => {
+  dispatch(setPostsLoading());
   if(isImage) {
   axios
     .post('/api/posts', post)
@@ -26,7 +27,7 @@ export const addPost = (post, isImage, history) => dispatch => {
         type: ADD_POST,
         payload: res.data
       }),
-      history.push('/my-posts')
+      // history.push('/my-posts')
     )
     .catch(err =>
       dispatch(returnErrors(err.response.data, err.response.status))
@@ -39,7 +40,7 @@ export const addPost = (post, isImage, history) => dispatch => {
         type: ADD_POST,
         payload: res.data
       }),
-      history.push('/my-posts')
+      // history.push('/my-posts')
     )
     .catch(err =>
       dispatch(returnErrors(err.response.data, err.response.status))

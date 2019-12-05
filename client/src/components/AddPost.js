@@ -43,15 +43,17 @@ class AddPost extends Component {
   render() {
     return ( 
       <div>
-      <MainNavBar {...this.props} /> 
+      <MainNavBar {...this.props} />
+      <br/><br/>
       {this.renderContent()} 
       </div>
     );
   }
 }
 
-function mapStateToProps({auth}) {
-  return {auth};
-}
+const mapStateToProps = state => ({
+  auth: state.auth,
+  post: state.post
+});
 
 export default connect(mapStateToProps)(AddPost);

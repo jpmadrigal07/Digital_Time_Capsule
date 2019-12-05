@@ -21,7 +21,6 @@ class App extends Component {
   }
 
   renderComponent = (component, isExact, props) => {
-    console.log(props);
     if(!this.props.auth.isLoading && this.props.auth.user) {
       if(props.location.pathname === "/" || props.location.pathname === "/login") {
         return <MyPosts {...props} title="CCP - My Posts" />

@@ -28,6 +28,7 @@ class Editors extends Component {
     return (
       <div>
           <MainNavBar {...this.props} />
+          <br/><br/>
           {this.renderContent()}
       </div>
     );

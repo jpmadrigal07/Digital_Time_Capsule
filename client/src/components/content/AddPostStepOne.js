@@ -1,9 +1,7 @@
 import React, {
     Component
 } from 'react';
-import moment from 'moment';
 import { connect } from 'react-redux';
-import { addPost } from '../../actions/postActions';
 import { withRouter } from 'react-router-dom';
 import FeatherIcon from 'feather-icons-react';
 import $ from 'jquery';
@@ -246,7 +244,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(
-  mapStateToProps,
-  { addPost }
-)(withRouter(AddPost));
+export default connect(mapStateToProps)(withRouter(AddPost));

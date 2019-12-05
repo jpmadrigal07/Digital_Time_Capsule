@@ -28,7 +28,8 @@ import {
       case ADD_POST:
         return {
           ...state,
-          posts: [...state.posts, action.payload]
+          posts: [...state.posts, action.payload],
+          loading: false
         };
       case EDIT_POST_STATUS:
           return {

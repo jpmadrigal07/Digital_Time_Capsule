@@ -15,7 +15,7 @@ class UserMenu extends Component {
   render() {
     return (
       <div>
-        <div className="nav-scroller bg-white box-shadow">
+        <div className="nav-scroller bg-white box-shadow" style={{position: 'fixed', width: '100%'}}>
             <div className="container">
               <nav className="nav nav-underline">
                 { this.renderMyPost() }                

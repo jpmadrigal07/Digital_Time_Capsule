@@ -22,6 +22,7 @@ class MyPosts extends Component {
     return (
       <div>
         <MainNavBar {...this.props} />
+        <br/><br/>
         {this.renderContent()}
       </div>
     );

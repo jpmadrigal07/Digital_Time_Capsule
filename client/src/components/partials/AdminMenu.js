@@ -15,7 +15,7 @@ class AdminMenu extends Component {
   render() {
     return (
       <div>
-        <div className="nav-scroller bg-white box-shadow">
+        <div className="nav-scroller bg-white box-shadow" style={{position: 'fixed'}}>
             <div className="container">
               <nav className="nav nav-underline">
                 { this.renderMyPost() }

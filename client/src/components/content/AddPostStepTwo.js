@@ -30,8 +30,8 @@ class AddPostStepOne extends Component {
         }
     }
 
-    onButtonClick = e => {
-        this.props.onClickButton({step: '1'})
+    onButtonClick = nextStep => {
+        this.props.onClickButton({step: nextStep})
     }
     
     render() {
@@ -48,15 +48,19 @@ class AddPostStepOne extends Component {
                                 <div style={{ clear: 'both'}}></div>
                                 <p style={{ marginTop: '15px'}}>{this.props.currentState.message}</p>
                                 <div style={{backgroundColor: '#F8F9FA'}} > <span id="media"></span></div>
-                               
+                            </div>
+                        </div>
+                        <div className="row mb-3"> 
+                            <div className="col-md-12">
+                                <h4 className="font-italic text-center">{this.props.currentState.dateMonth !== '' ? this.props.currentState.dateMonth+' ' : ''}{this.props.currentState.dateDay !== '' ? this.props.currentState.dateDay+', ' : ''}{this.props.currentState.dateYear}</h4>
                             </div>
                         </div>
                         <div className="row"> 
                             <div className="col-md-6">
-                                <button type="submit" onClick={this.onButtonClick} className="btn btn-primary">Back <FeatherIcon icon="arrow-left" size="18" /></button>
+                                <button type="submit" onClick={() => this.onButtonClick('1')} className="btn btn-primary">Back <FeatherIcon icon="arrow-left" size="18" /></button>
                             </div>
                             <div className="col-md-6">
-                                <button type="submit"  className="btn btn-primary float-right">Submit <FeatherIcon icon="arrow-right" size="18" /></button>
+                                <button type="submit" onClick={() => this.onButtonClick('3')}  className="btn btn-primary float-right">Submit <FeatherIcon icon="arrow-right" size="18" /></button>
                             </div>
                         </div>
                     </div>
