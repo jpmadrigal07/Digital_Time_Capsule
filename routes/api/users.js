@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
   const newEditor = new User({
     username: req.body.username,
     password: req.body.password,
-    email: 'editor@ccp.com',
+    email: '',
     profilePicture: '/images/default-user.png',
     firstName: req.body.firstName,
     lastName: req.body.lastName,

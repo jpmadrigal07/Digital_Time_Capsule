@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import FeatherIcon from 'feather-icons-react';
 import SinglePost from '../partials/SinglePost';
-import SinglePostNew from '../partials/SinglePostNew';
 import $ from 'jquery';
 
 class AddPostStepOne extends Component {
@@ -16,15 +15,13 @@ class AddPostStepOne extends Component {
             if(this.props.currentState.file[0].type !== "video/mp4") {
                 var reader = new FileReader();       
                 reader.onload = function (e) {
-                    // $('#img-upload').attr('src', e.target.result);
                     $('#media').html('<img class="img-fluid" id="img-upload" src="'+e.target.result+'" alt="Sample Photo" />')
                 }
                 reader.readAsDataURL(this.props.currentState.file[0]);
             } else {
                 var reader = new FileReader();      
                 reader.onload = function (e) {
-                    // $('#img-upload').attr('src', '/images/video-placeholder.png');
-                    $('#media').html('<video class="embed-responsive video-center" height="568" controls autoplay loop><source src="'+e.target.result+'" type="video/mp4"></video>')
+                    $('#media').html('<video class="embed-responsive video-center" height="568" controls autoplay muted loop><source src="'+e.target.result+'" type="video/mp4"></video>')
                     console.log()
                 }
                 reader.readAsDataURL(this.props.currentState.file[0]);
@@ -47,7 +44,7 @@ class AddPostStepOne extends Component {
                             </div>
                         </div>
                         <hr/>
-                        <SinglePostNew user={this.props.auth.user} post={this.props.currentState} type={'Uploading'} />
+                        <SinglePost user={this.props.auth.user} post={this.props.currentState} type={'Uploading'} />
                         <div className="row"> 
                             <div className="col-md-6">
                                 <button type="submit" onClick={() => this.onButtonClick('1')} className="btn btn-primary">Back <FeatherIcon icon="arrow-left" size="18" /></button>

@@ -9,7 +9,7 @@ export const getPosts = (status) => dispatch => {
     .then(res =>
       dispatch({
         type: GET_POSTS,
-        payload: res.data
+        payload: res.data.reverse()
       })
     )
     .catch(err =>
@@ -29,7 +29,7 @@ export const addPost = (post, isImage, history) => dispatch => {
       }),
       // history.push('/my-posts')
     )
-    .catch(err =>
+    .catch(err => 
       dispatch(returnErrors(err.response.data, err.response.status))
     );
   } else {
@@ -54,7 +54,7 @@ export const editPostStatus = (id, status) => dispatch => {
     .then(res =>
       dispatch({
         type: EDIT_POST_STATUS,
-        payload: res.data
+        payload: res.data.reverse()
       })
     )
     .catch(err =>
@@ -63,6 +63,7 @@ export const editPostStatus = (id, status) => dispatch => {
 };
 
 export const deletePost = id => dispatch => {
+  dispatch(setPostsLoading());
   axios
     .delete(`/api/posts/${id}`)
     .then(res =>

@@ -66,7 +66,7 @@ body {
 
 .nav-underline .active {
   font-weight: 500;
-  color: var(--gray-dark);
+  color: var(--blue);
 }
 
 .text-white-50 { color: rgba(255, 255, 255, .5); }

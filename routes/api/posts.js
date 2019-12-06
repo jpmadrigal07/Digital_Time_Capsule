@@ -53,21 +53,19 @@ router.get('/', (req, res) => {
 // @desc    Create An Post
 // @access  Private
 router.post('/', uploadController.uploadImages, uploadController.resizeImages, uploadController.resizeImagesSmaller, (req, res) => {
-
-  console.log(req.body);
-
 	if (req.files == undefined) {
 		res.json({success: false})
 	} else {
 		Post.create(req.body, function (err, post) {
 			if (err) {
-				res.json({success: false})
+        res.json({success: false})
+
 			} else {
-				Post.findOne({_id: post._id}).populate('userId').then(post => res.json(post));
+        Post.findOne({_id: post._id}).populate('userId').then(post => res.json(post));
+        console.log('gago')
 			}
 		})
 	}
-  
 });
 
 
@@ -136,7 +134,7 @@ router.put('/status/:id', (req, res) => {
 					message: err
 				})
 			} else {
-        Post.find().populate('userId').then(posts => res.json(posts));
+        Post.find({deletedAt: {$exists: false}}).populate('userId').then(posts => res.json(posts));
 			}
 		})
 

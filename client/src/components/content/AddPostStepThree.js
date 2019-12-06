@@ -34,7 +34,7 @@ class AddPostStepThree extends Component {
             const logoColor = 'text-success';
             return <MessageWithIcon icon={check} logoColor={logoColor} message={message} />
         } else {
-            return <LoadingSpinner />
+            return <LoadingSpinner message={'Please wait. Do not close this tab or this browser.'} />
         }
     }
     
