@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { addPost } from '../../actions/postActions';
 import LoadingSpinner from '../partials/LoadingSpinner';
-import SuccessMessage from '../partials/SuccessMessage';
+import MessageWithIcon from '../partials/MessageWithIcon';
 import $ from 'jquery';
 
 class AddPostStepThree extends Component {
@@ -29,10 +29,10 @@ class AddPostStepThree extends Component {
     renderContent = e => {
         if(!this.props.post.loading) {
             const check = 'check-circle';
-            const message = 'Successfully added!';
+            const message = 'Upload successful!';
             // Bootstrap class name color
             const logoColor = 'text-success';
-            return <SuccessMessage icon={check} logoColor={logoColor} message={message} />
+            return <MessageWithIcon icon={check} logoColor={logoColor} message={message} />
         } else {
             return <LoadingSpinner />
         }
@@ -43,8 +43,11 @@ class AddPostStepThree extends Component {
             <div>
                 <main role="main" className="container">
                     <div className="my-3 p-3 bg-white rounded box-shadow">
-                        <h4>Step 3: Submit and Upload</h4>
-                        <p className="font-italic text-muted">Just wait this until it's finish.</p>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <img className="img-fluid" src="/images/add-post-step-3.png" />
+                            </div>
+                        </div>
                         <hr/>
                         {console.log(this.props)}
                         {this.renderContent()} 

@@ -1,7 +1,7 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
 
-const SuccessMessage = ({icon, logoColor, message}) => {
+const MessageWithIcon = ({icon, logoColor, message}) => {
     return (
         <div>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
@@ -12,4 +12,4 @@ const SuccessMessage = ({icon, logoColor, message}) => {
     );
 };
 
-export default SuccessMessage;
+export default MessageWithIcon;

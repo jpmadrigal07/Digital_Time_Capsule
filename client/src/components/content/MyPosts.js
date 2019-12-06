@@ -7,6 +7,7 @@ import {
   } from 'reactstrap';
 import { getPosts, deletePost } from '../../actions/postActions';
 import PropTypes from 'prop-types';
+import SinglePostNew from '../partials/SinglePostNew';
 import moment from 'moment';
 
 class MyPosts extends Component {
@@ -59,8 +60,14 @@ class MyPosts extends Component {
         return (
             <div>
                 <main role="main" className="container">
-                    <div className="my-3 p-3 bg-white rounded box-shadow">
-                        <div className="table-responsive">
+                        {posts.reverse().map((post, index) => (
+                            <div className="my-3 p-3 bg-white rounded box-shadow">
+                                <SinglePostNew key={post._id} user={this.props.auth.user} post={post} type={'Uploaded'} />
+                                {typeof post.approvedAt !== 'undefined' ? <span className="badge badge-success">Approved</span> : <span className="badge badge-warning">Pending</span>}
+                            </div>
+                        ))}
+                        
+                        {/* <div className="table-responsive">
                             <table className="table table-striped table-sm">
                                 <thead>
                                     <tr>
@@ -89,8 +96,7 @@ class MyPosts extends Component {
                                     ))}
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
+                        </div> */}
                 </main>
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this, this.state.message)}>

@@ -172,8 +172,11 @@ class AddPost extends Component {
             <div>
                 <main role="main" className="container">
                     <div className="my-3 p-3 bg-white rounded box-shadow">
-                        <h4>Step 1: Create Post</h4>
-                        <p className="font-italic text-muted">All inputs that has <span className="text-danger">*</span> is required.</p>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <img className="img-fluid" src="/images/add-post-step-1.png" />
+                            </div>
+                        </div>
                         <hr/>
                         <form onSubmit={this.onSubmit}>
                             <div className="form-group">
