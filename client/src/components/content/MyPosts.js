@@ -45,7 +45,7 @@ class MyPosts extends Component {
     };
 
     renderPosts() {
-        if(!this.props.post.loading) {
+        if(!this.props.post.loading && this.props.post.posts.length > 0) {
             const { posts } = this.props.post;
             return  <div>
                         {posts.map((post, index) => (
@@ -56,6 +56,8 @@ class MyPosts extends Component {
                             </div>
                         ))}
                     </div>
+        } else if(!this.props.post.loading && this.props.post.posts.length === 0) {
+            return <MessageWithIcon icon={'alert-circle'} logoColor={'text-danger'} message={'No record to display.'} />
         } else {
             return <LoadingSpinner message={'Please wait...'} />
         }

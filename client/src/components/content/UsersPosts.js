@@ -9,6 +9,7 @@ import { getPosts, editPostStatus, deletePost } from '../../actions/postActions'
 import PropTypes from 'prop-types';
 import SinglePost from '../partials/SinglePost';
 import LoadingSpinner from '../partials/LoadingSpinner';
+import MessageWithIcon from '../partials/MessageWithIcon';
 
 class PendingPosts extends Component {
 
@@ -26,7 +27,7 @@ class PendingPosts extends Component {
     };
 
     renderPosts() {
-        if(!this.props.post.loading) {
+        if(!this.props.post.loading && this.props.post.posts.length > 0) {
             const { posts } = this.props.post;
             return  <div>
                         {posts.map((post, index) => (
@@ -37,6 +38,8 @@ class PendingPosts extends Component {
                             </div>
                         ))}
                     </div>
+        } else if(!this.props.post.loading && this.props.post.posts.length === 0) {
+            return <MessageWithIcon icon={'alert-circle'} logoColor={'text-danger'} message={'No record to display.'} />
         } else {
             return <LoadingSpinner message={'Please wait...'} />
         }
